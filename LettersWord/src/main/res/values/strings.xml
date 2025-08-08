@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">LettersWord</string>
+    <string name="available_letters_cannot_be_empty">Available letters cannot be empty</string>
+    <string name="only_letters_are_allowed">Only letters are allowed</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="available_letters">Available Letters:</string>
+    <string name="change">Change</string>
+    <string name="search">Search</string>
+    <string name="mask_to_search">Mask to search (use _ for unknown - eg _a_):</string>
 </resources>

@@ -19,9 +19,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import org.s_ball.lettersword.R
 
 
 @Composable
@@ -34,9 +37,11 @@ fun LettersDialog (
 ) {
     var text by remember { mutableStateOf(orig) }
     var msg by remember { mutableStateOf(previewMsg) }
+    val context = LocalContext.current
+    
     fun doClose() {
         if (orig.isEmpty()) {
-            msg = "Available letters cannot be empty"
+            msg = context.getString(R.string.available_letters_cannot_be_empty)
         }
         else {
             msg = ""
@@ -45,7 +50,7 @@ fun LettersDialog (
     }
     fun doValid(text: String) {
         if (text.isEmpty()) {
-            msg = "Available letters cannot be empty"
+            msg = context.getString(R.string.available_letters_cannot_be_empty)
         }
         else {
             onValid(text)
@@ -60,20 +65,26 @@ fun LettersDialog (
             border = BorderStroke(
                 width = 1.dp, color = Color.Black
             ),
-            modifier = modifier.fillMaxWidth().padding(4.dp)
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(4.dp)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(8.dp)
             ) {
                 TextField(
                     value = text,
+                    label = {
+                        Text(text = context.getString( R.string.available_letters))
+                    },
                     onValueChange = {
                         if ('\r' in it || '\n' in it) {
                             doValid(text)
                         }
                         else if (it.find { c ->  !c.isLetter() } != null) {
-                            msg = "Only letters are allowed"
+                            msg = context.getString(R.string.only_letters_are_allowed)
                         }
                         else if (text != it){
                             msg = ""
@@ -98,13 +109,13 @@ fun LettersDialog (
                             doValid(text)
                         }
                     ) {
-                        Text("Ok")
+                        Text(stringResource(R.string.ok))
                     }
                     Spacer(Modifier.weight(1f))
                     Button(
                         onClick = { doClose() },
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             }

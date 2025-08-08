@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LettersWord</string>
+    <string name="cancel">Annuler</string>
+    <string name="available_letters">Lettres disponibles :</string>
+    <string name="available_letters_cannot_be_empty">Les lettres disponibles ne peuvent être vide</string>
+    <string name="only_letters_are_allowed">Seules les lettres sont autorisées</string>
+    <string name="change">Changer</string>
+    <string name="search">Rechercher</string>
+    <string name="mask_to_search">Modèle à rechercher (_ pour tout accepter - ex : _a_) :</string>
+</resources>

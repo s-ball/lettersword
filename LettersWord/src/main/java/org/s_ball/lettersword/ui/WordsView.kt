@@ -20,8 +20,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.s_ball.lettersword.R
 import org.s_ball.lettersword.data.WordsRepository
 import org.s_ball.lettersword.ui.theme.LettersWordTheme
 import org.s_ball.lettersword.ui.theme.Typography
@@ -53,16 +55,18 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier) {
             modifier = modifier.fillMaxWidth()
         ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(8.dp)
                 ) {
                     Text(
-                        "Available Letters :",
+                        stringResource(R.string.available_letters),
                         style = Typography.labelSmall,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Row(
-                        modifier = Modifier.padding(0.dp)
+                        modifier = Modifier
+                            .padding(0.dp)
                             .fillMaxWidth()
                     ) {
                         Box(
@@ -81,7 +85,7 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier) {
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ) {
                             Text(
-                                text = "Change",
+                                text = stringResource(R.string.change),
                             )
                         }
                     }
@@ -95,12 +99,13 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier) {
                 modifier = modifier.fillMaxWidth()
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(8.dp)
 
                 ) {
                     Text(
-                        "Mask to search (use _ for unknown - eg _a_) :",
+                        stringResource(R.string.mask_to_search),
                         style = Typography.labelSmall
                     )
                     Row {
@@ -110,20 +115,24 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier) {
                                 mask = it
                             },
                             textStyle = Typography.displayMedium,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
                                 .padding(end = 8.dp)
                         )
                         OutlinedButton(
                             onClick = { model.onMaskChange(mask) },
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ) {
-                            Text("Search",
+                            Text(
+                                stringResource(R.string.search),
                             )
                         }
                     }
                 }
             }
-            LazyColumn (modifier = modifier.padding(8.dp).fillMaxWidth()){
+            LazyColumn (modifier = modifier
+                .padding(8.dp)
+                .fillMaxWidth()){
                 items(model.uiState.wordList.value) { word ->
                     Text(word, modifier = Modifier.padding(start = 12.dp))
                 }
