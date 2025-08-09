@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,11 +32,14 @@ import org.s_ball.lettersword.ui.theme.Typography
 import java.io.ByteArrayInputStream
 
 @Composable
-fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier) {
+fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
+              previewMsg: String = "") {
     var lettersShow by remember {
         mutableStateOf(false)
     }
     var mask by remember { mutableStateOf(model.uiState.mask) }
+    var msg by remember { mutableStateOf(previewMsg) }
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .padding(8.dp)
@@ -112,7 +117,17 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier) {
                         TextField(
                             value = mask,
                             onValueChange = {
-                                mask = it
+                                val t = cleanSpace(it)
+                                if ('\r' in it || '\n' in it) {
+                                    model.onMaskChange(mask)
+                                }
+                                else if (t.find { c ->  ((!c.isLetter() && c != '_') || c.code >= 128) } != null) {
+                                    msg = context.getString(R.string.only_letters_or__are_allowed)
+                                }
+                                else if (mask != t){
+                                    msg = ""
+                                    mask = t
+                                }
                             },
                             textStyle = Typography.displayMedium,
                             modifier = Modifier
@@ -127,6 +142,13 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier) {
                                 stringResource(R.string.search),
                             )
                         }
+                    }
+                    if (msg != "") {
+                        Text(
+                            msg,
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
                     }
                 }
             }
@@ -156,6 +178,6 @@ fun WordsPreview() {
     model.onLettersChange("trac")
     model.onMaskChange("___")
     LettersWordTheme {
-        WordsView(model)
+        WordsView(model, previewMsg = "Error message")
     }
 }

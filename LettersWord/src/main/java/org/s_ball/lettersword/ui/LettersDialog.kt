@@ -80,15 +80,16 @@ fun LettersDialog (
                         Text(text = context.getString( R.string.available_letters))
                     },
                     onValueChange = {
+                        val t = cleanSpace(it)
                         if ('\r' in it || '\n' in it) {
                             doValid(text)
                         }
-                        else if (it.find { c ->  !c.isLetter() } != null) {
+                        else if (t.find { c ->  (!c.isLetter() || c.code >= 128) } != null) {
                             msg = context.getString(R.string.only_letters_are_allowed)
                         }
-                        else if (text != it){
+                        else if (text != t){
                             msg = ""
-                            text = it
+                            text = t
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -123,6 +124,19 @@ fun LettersDialog (
     }
 }
 
+fun cleanSpace(orig: String): String {
+    var spacePos: Int = -1
+    orig.forEachIndexed { ix, c ->
+        if (c == ' ') {
+            if (spacePos == -1) {
+                spacePos = ix
+            }
+            else return " "
+        }
+    }
+    if (spacePos == -1) return orig
+    return orig.removeRange(spacePos, spacePos + 1)
+}
 
 @Preview(showBackground = true, apiLevel = 34)
 @Preview(showBackground = true, apiLevel = 34, device = "id:small_phone")
