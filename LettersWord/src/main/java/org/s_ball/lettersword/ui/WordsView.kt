@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
@@ -38,8 +39,14 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
         mutableStateOf(false)
     }
     var mask by remember { mutableStateOf(model.uiState.mask) }
+    var listOk by remember { mutableStateOf(false) }
     var msg by remember { mutableStateOf(previewMsg) }
     val context = LocalContext.current
+
+    fun doMaskChange(mask: String) {
+        model.onMaskChange(mask)
+        listOk = true
+    }
     Column(
         modifier = modifier
             .padding(8.dp)
@@ -97,6 +104,8 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
                 }
         }
         if (!model.uiState.letters.isEmpty()) {
+            var width by remember { mutableStateOf(75.dp) }
+
             OutlinedCard(
                 border = BorderStroke(
                     width = 1.dp, color = Color.Black
@@ -119,7 +128,7 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
                             onValueChange = {
                                 val t = cleanSpace(it)
                                 if ('\r' in it || '\n' in it) {
-                                    model.onMaskChange(mask)
+                                    doMaskChange(mask)
                                 }
                                 else if (t.find { c ->  ((!c.isLetter() && c != '_') || c.code >= 128) } != null) {
                                     msg = context.getString(R.string.only_letters_or__are_allowed)
@@ -127,6 +136,7 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
                                 else if (mask != t){
                                     msg = ""
                                     mask = t
+                                    listOk = false
                                 }
                             },
                             textStyle = Typography.displayMedium,
@@ -152,6 +162,21 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
                     }
                 }
             }
+            if (listOk) {
+                Measures(mask) { width = it }
+            }
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = width),
+                modifier = modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                ) {
+                items(model.uiState.wordList.value) { word ->
+                    Text(word, modifier = Modifier.padding(start = 12.dp))
+
+                }
+            }
+            /*
             LazyColumn (modifier = modifier
                 .padding(8.dp)
                 .fillMaxWidth()){
@@ -159,6 +184,7 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
                     Text(word, modifier = Modifier.padding(start = 12.dp))
                 }
             }
+            */
         }
     }
 }
