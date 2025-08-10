@@ -27,6 +27,11 @@ import androidx.compose.ui.window.Dialog
 import org.s_ball.lettersword.R
 
 
+fun doCase(txt: String): String {
+    return txt.lowercase()
+}
+
+
 @Composable
 fun LettersDialog (
     orig: String,
@@ -89,7 +94,7 @@ fun LettersDialog (
                         }
                         else if (text != t){
                             msg = ""
-                            text = t
+                            text = doCase(t)
                         }
                     },
                     modifier = Modifier.fillMaxWidth()

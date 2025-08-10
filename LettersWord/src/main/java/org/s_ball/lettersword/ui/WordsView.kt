@@ -135,7 +135,7 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
                                 }
                                 else if (mask != t){
                                     msg = ""
-                                    mask = t
+                                    mask = doCase(t)
                                     listOk = false
                                 }
                             },
@@ -163,7 +163,7 @@ fun WordsView(model: WordsViewModel, modifier: Modifier = Modifier,
                 }
             }
             if (listOk) {
-                Measures(mask) { width = it }
+                DoMeasures(mask) { width = it }
             }
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = width),

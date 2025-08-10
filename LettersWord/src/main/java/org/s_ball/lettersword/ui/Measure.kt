@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MeasuredText(txt: String, cr: (Dp) -> Unit) {
+fun DoMeasuredText(txt: String, cr: (Dp) -> Unit) {
     val measurer = rememberTextMeasurer()
     val cont = measurer.measure(txt)
     val density = LocalDensity.current
@@ -19,10 +19,10 @@ fun MeasuredText(txt: String, cr: (Dp) -> Unit) {
 }
 
 @Composable
-fun Measures(mask: String, resul: (Dp) -> Unit) {
+fun DoMeasures(mask: String, resul: (Dp) -> Unit) {
     val l = mask.length
     val withM = "m".repeat(l)
     var dp: Dp = 0.dp
-    MeasuredText(withM) { dp = it }
+    DoMeasuredText(withM) { dp = it }
     resul(dp)
 }
