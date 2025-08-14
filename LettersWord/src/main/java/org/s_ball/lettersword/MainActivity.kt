@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.s_ball.lettersword.data.WordsRepository
@@ -23,14 +24,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val locale: java.util.Locale = java.util.Locale.getDefault()
-        val words = WordsRepository(
-            applicationContext.resources.openRawResource(R.raw.words)
+        RepoHolder.initialize(
+            WordsRepository(
+                applicationContext.resources.openRawResource(R.raw.words)
+            )
         )
-        val model = WordsViewModel(words)
         enableEdgeToEdge()
         setContent {
             LettersWordTheme {
-                var display by remember { mutableStateOf(
+                var display by rememberSaveable { mutableStateOf(
                     !locale.toString().startsWith("fr")) }
                 Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
                     if (display) {
@@ -43,7 +45,6 @@ class MainActivity : ComponentActivity() {
                     }
                     else {
                         WordsView(
-                            model,
                             modifier = Modifier.Companion.padding(innerPadding)
                         )
                     }

@@ -9,4 +9,7 @@
     <string name="search">Search</string>
     <string name="mask_to_search">Mask to search (use _ for unknown - eg _a_):</string>
     <string name="only_letters_or__are_allowed">Only letters or _ are allowed</string>
+    <string name="lettersword">LettersWord</string>
+    <string name="about">About</string>
+    <string name="help">Help</string>
 </resources>

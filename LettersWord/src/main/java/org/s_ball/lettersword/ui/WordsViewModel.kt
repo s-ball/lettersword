@@ -1,35 +1,48 @@
 package org.s_ball.lettersword.ui
 
-import androidx.compose.runtime.MutableState
+ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import org.s_ball.lettersword.RepoHolder
 import org.s_ball.lettersword.data.IWordsRepository
 import org.s_ball.lettersword.domain.Searcher
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 data class WordsUiState (
-    var letters: String = "",
-    var mask: String = "",
-    var wordList: MutableState<List<String>> = mutableStateOf(listOf())
+    val mask: String = "",
+    val wordList: List<String> = listOf()
 )
 
-class WordsViewModel(private val repository: IWordsRepository): ViewModel() {
+interface IWordsViewModel {
+    val uiState: StateFlow<WordsUiState>
+    val letters: String
+    fun onMaskChange(word: String)
+    fun onLettersChange(word: String)
+}
+class WordsViewModel(
+    val repository: IWordsRepository = RepoHolder.getRepo()
+): ViewModel() {
     private var _uiState = MutableStateFlow(WordsUiState())
-    val uiState = _uiState.asStateFlow().value
+    val uiState = _uiState.asStateFlow()
 
-    val wordList
-        get() = uiState.wordList.value
+    var letters by mutableStateOf("")
+        private set
 
     private var searcher: Searcher? = null
 
     fun onMaskChange(word: String) {
-        _uiState.value.mask = word
-        _uiState.value.wordList.value = if (searcher != null && word.isNotEmpty())
+        val lst = if (searcher != null && word.isNotEmpty())
             searcher!!.masked(word) else listOf()
+        _uiState.update { state ->
+            WordsUiState(word, lst)
+        }
     }
     fun onLettersChange(word: String) {
-        _uiState.value.letters = word
+        letters = word
         searcher = if (word.isNotEmpty()) Searcher(word, repository) else null
         onMaskChange("")
     }
