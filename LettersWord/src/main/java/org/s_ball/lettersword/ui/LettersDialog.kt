@@ -40,7 +40,7 @@ fun LettersDialog (
     previewMsg: String = "",
     onValid: (String) -> Unit,
 ) {
-    var text by remember { mutableStateOf(orig) }
+    var text by remember { mutableStateOf("") }
     var msg by remember { mutableStateOf(previewMsg) }
     val context = LocalContext.current
     
