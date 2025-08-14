@@ -182,7 +182,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                 newList = false
             }
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = width),
+                columns = GridCells.Adaptive(minSize = width + 8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                 ) {
