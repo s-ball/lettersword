@@ -1,28 +1,21 @@
 package org.s_ball.lettersword.ui
 
  import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import org.s_ball.lettersword.RepoHolder
-import org.s_ball.lettersword.data.IWordsRepository
-import org.s_ball.lettersword.domain.Searcher
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.setValue
+ import androidx.lifecycle.ViewModel
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
+ import org.s_ball.lettersword.RepoHolder
+ import org.s_ball.lettersword.data.IWordsRepository
+ import org.s_ball.lettersword.domain.Searcher
 
 data class WordsUiState (
     val mask: String = "",
     val wordList: List<String> = listOf()
 )
 
-interface IWordsViewModel {
-    val uiState: StateFlow<WordsUiState>
-    val letters: String
-    fun onMaskChange(word: String)
-    fun onLettersChange(word: String)
-}
 class WordsViewModel(
     val repository: IWordsRepository = RepoHolder.getRepo()
 ): ViewModel() {

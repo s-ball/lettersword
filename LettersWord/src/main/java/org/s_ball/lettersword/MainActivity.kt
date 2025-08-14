@@ -9,14 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.s_ball.lettersword.data.WordsRepository
 import org.s_ball.lettersword.ui.NotFrenchDialog
 import org.s_ball.lettersword.ui.WordsView
-import org.s_ball.lettersword.ui.WordsViewModel
 import org.s_ball.lettersword.ui.theme.LettersWordTheme
 import kotlin.system.exitProcess
 
