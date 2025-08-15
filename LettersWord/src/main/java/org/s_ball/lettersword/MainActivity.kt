@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.s_ball.lettersword.data.WordsRepository
+import org.s_ball.lettersword.ui.MenuBar
 import org.s_ball.lettersword.ui.NotFrenchDialog
 import org.s_ball.lettersword.ui.WordsView
 import org.s_ball.lettersword.ui.theme.LettersWordTheme
@@ -32,7 +33,10 @@ class MainActivity : ComponentActivity() {
             LettersWordTheme {
                 var display by rememberSaveable { mutableStateOf(
                     !locale.toString().startsWith("fr")) }
-                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.Companion.fillMaxSize(),
+                    topBar = { MenuBar() },
+                    ) { innerPadding ->
                     if (display) {
                         NotFrenchDialog (
                             onClose = { display = false }

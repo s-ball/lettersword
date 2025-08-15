@@ -12,4 +12,16 @@
     <string name="only_letters_or__are_allowed">Seules les lettres et _ sont autorisées</string>
     <string name="about">A propos de</string>
     <string name="help">Aide</string>
+    <string name="name_and_version">%1$s - %2$s</string>
+    <string name="display_a_list">Affiche une liste de mots français construits à partir d\'une liste de lettres donnée et respectant un certain modèle.</string>
+    <string name="only_non_accented">Seuls les caractères non accentuées sont acceptés ici. Par exemple, é et è seront tous deux représentés par e.</string>
+    <string name="if_a_letter">Si une lettre est répétée dans un mot, elle doit exister (au moins) autant de fois dans la liste.</string>
+    <string name="the_pattern_contains">Le modèle contient le même nombre de lettres que le mot, et le caractère _ peut remplacer n\'importe quel caractère.</string>
+    <string name="for_example">Par exemple pour la liste \"lettre\", le modèle \"_t_\" donnera le mot \"ete\" (pour \"été\") et le modèle \"_e_\" donnera \"let\", \"ree\" (pour rée), \"tee\", \"tel\", \"ter\" et \"tet\".</string>
+    <string name="version_not_found">version non trouvée</string>
+    <string name="cont">Continuer</string>
+    <string name="abort">Abandonner</string>
+    <string name="beware_wrong_language">Attention : langue incorrecte</string>
+    <string name="the_current_dictionary_only_contains_french_words">Le dictionnaire courant contient seulement des mots français.</string>
+    <string name="do_you_really_want_to_continue">Voulez-vous vraiment continuer ?</string>
 </resources>

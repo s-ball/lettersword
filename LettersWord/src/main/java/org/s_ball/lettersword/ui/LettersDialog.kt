@@ -115,13 +115,13 @@ fun LettersDialog (
                             doValid(text)
                         }
                     ) {
-                        Text(stringResource(R.string.ok))
+                        Text(context.getString(R.string.ok))
                     }
                     Spacer(Modifier.weight(1f))
                     Button(
                         onClick = { doClose() },
                     ) {
-                        Text(stringResource(R.string.cancel))
+                        Text(context.getString(R.string.cancel))
                     }
                 }
             }

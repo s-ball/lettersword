@@ -9,7 +9,18 @@
     <string name="search">Search</string>
     <string name="mask_to_search">Mask to search (use _ for unknown - eg _a_):</string>
     <string name="only_letters_or__are_allowed">Only letters or _ are allowed</string>
-    <string name="lettersword" translatable="false">LettersWord</string>
     <string name="about">About</string>
     <string name="help">Help</string>
+    <string name="name_and_version">%1$s - %2$s</string>
+    <string name="display_a_list">Display a list of French words built from a fixed list of letters and matching a pattern.</string>
+    <string name="only_non_accented">Only non accented letters are considered here. For example é and è will both be represented as e.</string>
+    <string name="if_a_letter">If a letter is to be repeated in a word, it must be present (at least) that number of times in the list.</string>
+    <string name="the_pattern_contains">The pattern contains the same number of letters as the word, and the special character _ is a replacement for any character.</string>
+    <string name="for_example">For example for the list \"letter\", the mask \"_t_\" will give the word \"ete\" (for \"été\") and the mask \"_e_\" will give \"let\", \"ree\" (for \"rée\"), \"tee\", \"tel\", \"ter\" and \"tet\".</string>
+    <string name="version_not_found">version not found</string>
+    <string name="cont">Continue</string>
+    <string name="abort">Abort</string>
+    <string name="beware_wrong_language">Beware: wrong language</string>
+    <string name="the_current_dictionary_only_contains_french_words">The current dictionary only contains French words.</string>
+    <string name="do_you_really_want_to_continue">Do you really want to continue?</string>
 </resources>
