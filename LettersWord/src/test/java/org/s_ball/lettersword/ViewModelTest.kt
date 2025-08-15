@@ -24,9 +24,9 @@ class ViewModelTest {
     @Test
     fun defaultView() {
         val view = WordsViewModel(TestRepo)
-        assertEquals("", view.uiState.letters)
-        assertEquals("", view.uiState.mask)
-        assert(view.wordList.isEmpty())
+        assertEquals("", view.letters)
+        assertEquals("", view.uiState.value.mask)
+        assert(view.uiState.value.wordList.isEmpty())
     }
 
     @Test
@@ -34,8 +34,8 @@ class ViewModelTest {
         val view = WordsViewModel(TestRepo)
         view.onLettersChange("abcabc")
         view.onMaskChange("a__")
-        assertEquals(1, view.wordList.size)
-        assertEquals("abc", view.wordList[0])
+        assertEquals(1, view.uiState.value.wordList.size)
+        assertEquals("abc", view.uiState.value.wordList[0])
     }
 
     @Test
@@ -44,8 +44,8 @@ class ViewModelTest {
         view.onLettersChange("abcabc")
         view.onMaskChange("a__")
         view.onLettersChange("abdabe")
-        assertEquals("abdabe", view.uiState.letters)
-        assertEquals("", view.uiState.mask)
-        assert(view.wordList.isEmpty())
+        assertEquals("abdabe", view.letters)
+        assertEquals("", view.uiState.value.mask)
+        assert(view.uiState.value.wordList.isEmpty())
     }
 }
