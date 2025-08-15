@@ -1,6 +1,7 @@
 package org.s_ball.lettersword.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -34,7 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.s_ball.lettersword.R
-import org.s_ball.lettersword.ui.theme.LettersWordTheme
 import org.s_ball.lettersword.ui.theme.Typography
 
 @Composable
@@ -67,7 +68,8 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
     Column(
         modifier = modifier
             .padding(4.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         if (letters.isEmpty()) lettersShow = true
         if (lettersShow) LettersDialog(
@@ -125,7 +127,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                 border = BorderStroke(
                     width = 1.dp, color = Color.Black
                 ),
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier
@@ -145,11 +147,9 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                                 if ('\r' in it || '\n' in it) {
                                     doMaskChange(mask)
                                     msg = ""
-                                }
-                                else if (t.find { c ->  ((!c.isLetter() && c != '_') || c.code >= 128) } != null) {
+                                } else if (t.find { c -> ((!c.isLetter() && c != '_') || c.code >= 128) } != null) {
                                     msg = context.getString(R.string.only_letters_or__are_allowed)
-                                }
-                                else if (mask != t){
+                                } else if (mask != t) {
                                     msg = ""
                                     mask = doCase(t)
                                 }
@@ -185,7 +185,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                 columns = GridCells.Adaptive(minSize = width + 8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                ) {
+            ) {
                 items(uiState.wordList) { word ->
                     Text(word, modifier = Modifier.padding(start = 12.dp))
 
@@ -202,16 +202,19 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
 @Composable
 fun WordsPreview() {
 
-    LettersWordTheme {
+    Scaffold {
         WordsLayout(
             letters = "cart",
             onLettersChange = {},
-            uiStateFlow = MutableStateFlow(WordsUiState(
-                "___",
-                listOf("act", "art", "car", "cat", "rat", "tar")
-            )),
+            uiStateFlow = MutableStateFlow(
+                WordsUiState(
+                    "___",
+                    listOf("act", "art", "car", "cat", "rat", "tar")
+                )
+            ),
             onMaskChange = {},
-            previewMsg = "Error message"
+            previewMsg = "Error message",
+            modifier = Modifier.padding(it),
         )
     }
 }

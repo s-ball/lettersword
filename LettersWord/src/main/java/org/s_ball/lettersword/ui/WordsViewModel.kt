@@ -22,6 +22,7 @@ class WordsViewModel(
     private var _uiState = MutableStateFlow(WordsUiState())
     val uiState = _uiState.asStateFlow()
 
+    @Suppress("EmptyMethod")
     var letters by mutableStateOf("")
         private set
 
