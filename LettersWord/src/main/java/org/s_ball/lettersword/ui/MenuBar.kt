@@ -1,3 +1,7 @@
+/*
+ * Copyright (c)  s-ball 2025-current - MIT License
+ */
+
 package org.s_ball.lettersword.ui
 
 import androidx.compose.foundation.layout.Box
