@@ -6,6 +6,7 @@ package org.s_ball.lettersword.ui
 
 import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -13,8 +14,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import org.s_ball.lettersword.R
 
@@ -43,19 +51,38 @@ fun InfoDialog(
             Column (
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ){
-                Text("© s-ball - 2025-current - MIT License\n")
                 Text(stringResource(R.string.display_a_list))
                 Text(stringResource(R.string.only_non_accented))
                 Text(stringResource(R.string.if_a_letter))
                 Text(stringResource(R.string.the_pattern_contains))
                 Text(stringResource(R.string.for_example))
+                val htmlLink = stringResource(R.string.more_information)
+                val linkStyles = TextLinkStyles(
+                    style = SpanStyle(color = Color.Blue),
+                    hoveredStyle = SpanStyle(textDecoration = TextDecoration.Underline)
+                )
+                val annotatedLink = AnnotatedString.fromHtml(
+                    htmlString = htmlLink,
+                    linkStyles = linkStyles,
+                )
+                Text(
+                    text = annotatedLink,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     )
 }
 
-@Preview
+@Preview(apiLevel = 34)
 @Composable
 fun DlgPreview() {
+    InfoDialog {  }
+}
+
+@Preview(apiLevel = 34, locale = "fr")
+@Composable
+fun DlgPreviewFr() {
     InfoDialog {  }
 }

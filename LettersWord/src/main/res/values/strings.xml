@@ -9,8 +9,6 @@
     <string name="search">Search</string>
     <string name="mask_to_search">Mask to search (use _ for unknown - eg _a_):</string>
     <string name="only_letters_or__are_allowed">Only letters or _ are allowed</string>
-    <string name="about">About</string>
-    <string name="help">Help</string>
     <string name="name_and_version">%1$s - %2$s</string>
     <string name="display_a_list">Display a list of French words built from a fixed list of letters and matching a pattern.</string>
     <string name="only_non_accented">Only non accented letters are considered here. For example é and è will both be represented as e.</string>
@@ -23,4 +21,5 @@
     <string name="beware_wrong_language">Beware: wrong language</string>
     <string name="the_current_dictionary_only_contains_french_words">The current dictionary only contains French words.</string>
     <string name="do_you_really_want_to_continue">Do you really want to continue?</string>
+    <string name="more_information"><![CDATA[<br/>More information on <a href=\"https://github.com/s-ball/lettersword/README.md\">GitHub</a>]]></string>
 </resources>
