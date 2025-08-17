@@ -22,5 +22,5 @@
     <string name="beware_wrong_language">Attention : langue incorrecte</string>
     <string name="the_current_dictionary_only_contains_french_words">Le dictionnaire courant contient seulement des mots français.</string>
     <string name="do_you_really_want_to_continue">Voulez-vous vraiment continuer ?</string>
-    <string name="more_information"><![CDATA[<br/>Plus d\'information sur <a href=\"https://github.com/s-ball/lettersword/README.md\">GitHub</a>]]></string>
+    <string name="more_information"><![CDATA[<br/>Plus d\'information sur <a href=\"https://github.com/s-ball/lettersword/\">GitHub</a>]]></string>
 </resources>

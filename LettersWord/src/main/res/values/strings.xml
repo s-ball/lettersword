@@ -21,5 +21,5 @@
     <string name="beware_wrong_language">Beware: wrong language</string>
     <string name="the_current_dictionary_only_contains_french_words">The current dictionary only contains French words.</string>
     <string name="do_you_really_want_to_continue">Do you really want to continue?</string>
-    <string name="more_information"><![CDATA[<br/>More information on <a href=\"https://github.com/s-ball/lettersword/README.md\">GitHub</a>]]></string>
+    <string name="more_information"><![CDATA[<br/>More information on <a href=\"https://github.com/s-ball/lettersword/\">GitHub</a>]]></string>
 </resources>
