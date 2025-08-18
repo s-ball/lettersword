@@ -14,7 +14,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -25,6 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import org.s_ball.lettersword.R
+import org.s_ball.lettersword.ui.theme.LettersWordTheme
+import org.s_ball.lettersword.ui.theme.LocalHtmlScheme
 
 @Composable
 fun InfoDialog(
@@ -57,10 +58,10 @@ fun InfoDialog(
                 Text(stringResource(R.string.the_pattern_contains))
                 Text(stringResource(R.string.for_example))
                 val htmlLink = stringResource(R.string.more_information)
-                val linkStyles = TextLinkStyles(
-                    style = SpanStyle(color = Color.Blue),
-                    hoveredStyle = SpanStyle(textDecoration = TextDecoration.Underline)
-                )
+                val linkStyles = TextLinkStyles(style = SpanStyle(
+                        color = LocalHtmlScheme.current.link,
+                        textDecoration = TextDecoration.Underline
+                ))
                 val annotatedLink = AnnotatedString.fromHtml(
                     htmlString = htmlLink,
                     linkStyles = linkStyles,
@@ -70,6 +71,7 @@ fun InfoDialog(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
+                Text(LocalHtmlScheme.current.link.toString())
             }
         }
     )
@@ -78,11 +80,15 @@ fun InfoDialog(
 @Preview(apiLevel = 34)
 @Composable
 fun DlgPreview() {
-    InfoDialog {  }
+    LettersWordTheme {
+        InfoDialog { }
+    }
 }
 
 @Preview(apiLevel = 34, locale = "fr")
 @Composable
 fun DlgPreviewFr() {
-    InfoDialog {  }
+    LettersWordTheme {
+        InfoDialog { }
+    }
 }
