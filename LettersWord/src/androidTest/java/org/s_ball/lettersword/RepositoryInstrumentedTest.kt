@@ -20,6 +20,6 @@ class RepositoryInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         val stream = appContext.resources.openRawResource(R.raw.words)
         val repository = WordsRepository(stream)
-        assertTrue(repository.total > 10000)
+        assertTrue(repository.words(5).size > 1000)
     }
 }
