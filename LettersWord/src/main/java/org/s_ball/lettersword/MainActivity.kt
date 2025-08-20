@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import org.s_ball.lettersword.data.WordsRepository
 import org.s_ball.lettersword.ui.MenuBar
 import org.s_ball.lettersword.ui.NotFrenchDialog
 import org.s_ball.lettersword.ui.WordsView
@@ -27,11 +26,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val locale: java.util.Locale = java.util.Locale.getDefault()
-        RepoHolder.initialize(
-            WordsRepository(
-                applicationContext.resources.openRawResource(R.raw.words)
-            )
-        )
         enableEdgeToEdge()
         setContent {
             LettersWordTheme {

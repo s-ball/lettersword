@@ -9,7 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun WordsView( modifier: Modifier = Modifier, model: WordsViewModel = viewModel()) {
+fun WordsView(
+    modifier: Modifier = Modifier,
+    model: WordsViewModel = viewModel(factory = WordsViewModel.Factory)
+) {
     WordsLayout(
         modifier = modifier,
         letters = model.letters,
