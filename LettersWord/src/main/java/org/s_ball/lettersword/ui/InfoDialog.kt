@@ -71,7 +71,6 @@ fun InfoDialog(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
-                Text(LocalHtmlScheme.current.link.toString())
             }
         }
     )
