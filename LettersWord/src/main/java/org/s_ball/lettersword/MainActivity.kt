@@ -20,7 +20,6 @@ import org.s_ball.lettersword.ui.MenuBar
 import org.s_ball.lettersword.ui.NotFrenchDialog
 import org.s_ball.lettersword.ui.WordsView
 import org.s_ball.lettersword.ui.theme.LettersWordTheme
-import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +39,6 @@ class MainActivity : ComponentActivity() {
                             onClose = { display = false }
                         ) {
                             this.finish()
-                            exitProcess(0)
                         }
                     }
                     else {
