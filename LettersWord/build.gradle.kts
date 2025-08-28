@@ -41,7 +41,15 @@ android {
     buildFeatures {
         compose = true
     }
-}
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+    packaging {
+        resources.merges.add("META-INF/LICENSE.md")
+    }
+ }
 
 dependencies {
 
@@ -58,9 +66,13 @@ dependencies {
     implementation(libs.protolite.well.known.types)
     implementation(libs.androidx.ui.unit)
     implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.ui.test.junit4)
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    //androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)

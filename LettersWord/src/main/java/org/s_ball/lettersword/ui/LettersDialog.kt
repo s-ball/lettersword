@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -101,11 +102,13 @@ fun LettersDialog (
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
+                        .testTag("LettersField")
                 )
                 if (msg != "") {
                     Text(
                         msg,
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                            .testTag("Message"),
                         color = MaterialTheme.colorScheme.tertiary
                     )
                 }
@@ -116,13 +119,15 @@ fun LettersDialog (
                     Button(
                         onClick = {
                             doValid(text)
-                        }
+                        },
+                        modifier= Modifier.testTag("Ok")
                     ) {
                         Text(context.getString(R.string.ok))
                     }
                     Spacer(Modifier.weight(1f))
                     Button(
                         onClick = { doClose() },
+                        modifier = Modifier.testTag("Cancel")
                     ) {
                         Text(context.getString(R.string.cancel))
                     }
