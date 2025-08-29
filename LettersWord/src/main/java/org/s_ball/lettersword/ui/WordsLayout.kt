@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -162,10 +163,13 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(end = 8.dp)
+                                .testTag("MaskField")
                         )
                         OutlinedButton(
                             onClick = { doMaskChange(mask) },
-                            modifier = Modifier.align(Alignment.CenterVertically)
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .testTag("MaskButton")
                         ) {
                             Text(
                                 stringResource(R.string.search),
@@ -189,6 +193,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                 columns = GridCells.Adaptive(minSize = width + 8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .testTag("WordsList")
             ) {
                 items(uiState.wordList) { word ->
                     Text(word, modifier = Modifier.padding(start = 12.dp))
