@@ -47,13 +47,14 @@ import org.s_ball.lettersword.ui.theme.Typography
 fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewModel(),
                 uiStateFlow: StateFlow<WordsUiState>,
                 onMaskChange: (String) -> Unit,
-                letters: String,
+                lettersFlow: StateFlow<String>,
                 onLettersChange: (String) -> Unit,
                 previewMsg: String = "") {
     var lettersShow by rememberSaveable {
         mutableStateOf(false)
     }
     val uiState by uiStateFlow.collectAsStateWithLifecycle()
+    val letters by lettersFlow.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     val dpSaver = Saver<MutableState<Dp>, MutableState<Float>>(
@@ -213,7 +214,7 @@ fun WordsPreview() {
 
     Scaffold {
         WordsLayout(
-            letters = "cart",
+            lettersFlow = MutableStateFlow("cart"),
             onLettersChange = {},
             uiStateFlow = MutableStateFlow(
                 WordsUiState(

@@ -37,11 +37,13 @@ class WordsLayoutTest {
 
     val commands = mockk<Commands>(relaxUnitFun = true)
     lateinit var uiState: MutableStateFlow<WordsUiState>
+    lateinit var lettersFlow: MutableStateFlow<String>
 
     @Before
     fun setUp() {
         ShadowLog.stream = System.out // Redirect Logcat to console
         uiState = MutableStateFlow(WordsUiState())
+        lettersFlow = MutableStateFlow("")
         clearMocks(commands)
     }
 
@@ -50,12 +52,13 @@ class WordsLayoutTest {
              words: List<String> = listOf(),
     ) {
         uiState = MutableStateFlow(WordsUiState(mask, words))
+        lettersFlow = MutableStateFlow(letters)
         composeTestRule.setContent {
             WordsLayout(
                 Modifier,
                 uiState.asStateFlow(),
                 onMaskChange = { txt -> commands.onMaskChange(txt) },
-                letters = letters,
+                lettersFlow = lettersFlow,
                 onLettersChange = { txt -> commands.onLettersChange(txt)},
             )
         }
@@ -78,6 +81,8 @@ class WordsLayoutTest {
         composeTestRule.onNodeWithTag("LettersField").performTextInput("foo")
         composeTestRule.onNodeWithTag("Ok").performClick()
         verify { commands.onLettersChange("foo") }
+        lettersFlow.update { w -> "foo" }
+        composeTestRule.onNodeWithTag("LettersField").assertDoesNotExist()
     }
 
     @Test

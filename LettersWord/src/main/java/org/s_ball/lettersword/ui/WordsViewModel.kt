@@ -4,9 +4,6 @@
 
 package org.s_ball.lettersword.ui
 
- import androidx.compose.runtime.getValue
- import androidx.compose.runtime.mutableStateOf
- import androidx.compose.runtime.setValue
  import androidx.lifecycle.ViewModel
  import androidx.lifecycle.ViewModelProvider
  import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,9 +23,8 @@ class WordsViewModel(
     private var _uiState = MutableStateFlow(WordsUiState())
     val uiState = _uiState.asStateFlow()
 
-    var letters by mutableStateOf("")
-        @Suppress("EmptyMethod")
-        private set
+    private var _letters = MutableStateFlow("")
+    val letters = _letters.asStateFlow()
 
     private var searcher: Searcher? = null
 
@@ -40,7 +36,7 @@ class WordsViewModel(
         }
     }
     fun onLettersChange(word: String) {
-        letters = word
+        _letters.update { w -> word }
         searcher = if (word.isNotEmpty()) Searcher(word, repository) else null
         onMaskChange("")
     }

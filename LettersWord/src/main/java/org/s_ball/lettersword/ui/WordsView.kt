@@ -15,7 +15,7 @@ fun WordsView(
 ) {
     WordsLayout(
         modifier = modifier,
-        letters = model.letters,
+        lettersFlow = model.letters,
         onLettersChange = { word -> model.onLettersChange(word) },
         uiStateFlow = model.uiState,
         onMaskChange = { word -> model.onMaskChange(word)}

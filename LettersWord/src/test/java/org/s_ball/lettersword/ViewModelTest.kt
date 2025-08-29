@@ -24,7 +24,7 @@ class ViewModelTest {
     @Test
     fun defaultView() {
         val view = WordsViewModel(TestRepo)
-        assertEquals("", view.letters)
+        assertEquals("", view.letters.value)
         assertEquals("", view.uiState.value.mask)
         assert(view.uiState.value.wordList.isEmpty())
     }
@@ -44,7 +44,7 @@ class ViewModelTest {
         view.onLettersChange("abcabc")
         view.onMaskChange("a__")
         view.onLettersChange("abdabe")
-        assertEquals("abdabe", view.letters)
+        assertEquals("abdabe", view.letters.value)
         assertEquals("", view.uiState.value.mask)
         assert(view.uiState.value.wordList.isEmpty())
     }
