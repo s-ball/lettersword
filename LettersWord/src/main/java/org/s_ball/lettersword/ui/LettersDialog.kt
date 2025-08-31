@@ -35,6 +35,13 @@ fun doCase(txt: String): String {
     return txt.lowercase()
 }
 
+typealias LettersDialogType= @Composable (
+    orig: String,
+    closer: () -> Unit,
+    modifier: Modifier,
+    previewMsg: String,
+    onValid: (String) -> Unit,
+) -> Unit
 
 @Composable
 fun LettersDialog (

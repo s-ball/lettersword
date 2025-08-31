@@ -4,7 +4,9 @@
 
 package org.s_ball.lettersword.ui
 
+import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -14,11 +16,14 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.clearMocks
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -39,6 +44,24 @@ class WordsLayoutTest {
     lateinit var uiState: MutableStateFlow<WordsUiState>
     lateinit var lettersFlow: MutableStateFlow<String>
 
+    var onValidRef: (String) -> Unit = {}
+    var closerRef: () -> Unit = {}
+    var nbCalls = 0
+    val tag = "stub"
+    val foo = "foo"
+    val stubDialog: LettersDialogType = {
+            orig,
+            closer,
+            modifier,
+            previewMsg,
+            onValid,
+        ->
+        onValidRef = onValid
+        closerRef = closer
+        nbCalls += 1
+        Text("STUB", modifier = Modifier.testTag(tag))
+    }
+
     @Before
     fun setUp() {
         ShadowLog.stream = System.out // Redirect Logcat to console
@@ -53,6 +76,9 @@ class WordsLayoutTest {
     ) {
         uiState = MutableStateFlow(WordsUiState(mask, words))
         lettersFlow = MutableStateFlow(letters)
+        val lettersSlot = slot<String>()
+        every { commands.onLettersChange(capture(lettersSlot))
+        } answers { lettersFlow.update { words -> lettersSlot.captured }}
         composeTestRule.setContent {
             WordsLayout(
                 Modifier,
@@ -60,6 +86,7 @@ class WordsLayoutTest {
                 onMaskChange = { txt -> commands.onMaskChange(txt) },
                 lettersFlow = lettersFlow,
                 onLettersChange = { txt -> commands.onLettersChange(txt)},
+                dialog = stubDialog
             )
         }
     }
@@ -67,22 +94,24 @@ class WordsLayoutTest {
     @Test
     fun initialEmptyLetters() {
         init("")
-        composeTestRule.onNodeWithTag("LettersField").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(tag).assertIsDisplayed()
     }
     @Test
     fun initialLetters() {
         init("letters")
-        composeTestRule.onNodeWithTag("LettersField").assertDoesNotExist()
+        composeTestRule.onNodeWithTag(tag).assertDoesNotExist()
     }
     @Test
     fun setLetters() {
         init("")
-        composeTestRule.onNodeWithTag("LettersField").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("LettersField").performTextInput("foo")
-        composeTestRule.onNodeWithTag("Ok").performClick()
-        verify { commands.onLettersChange("foo") }
-        lettersFlow.update { w -> "foo" }
-        composeTestRule.onNodeWithTag("LettersField").assertDoesNotExist()
+        composeTestRule.onNodeWithTag(tag).assertIsDisplayed()
+        Assert.assertEquals(1, nbCalls)
+        verify (exactly = 0){ commands.onLettersChange(foo) }
+        onValidRef(foo)
+        closerRef()
+        verify (exactly = 1){ commands.onLettersChange(foo) }
+        Assert.assertEquals(1, nbCalls)
+        composeTestRule.onNodeWithTag(tag).assertDoesNotExist()
     }
 
     @Test

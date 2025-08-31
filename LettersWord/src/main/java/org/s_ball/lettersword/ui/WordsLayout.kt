@@ -43,13 +43,23 @@ import kotlinx.coroutines.flow.StateFlow
 import org.s_ball.lettersword.R
 import org.s_ball.lettersword.ui.theme.Typography
 
+val lettersDialog: LettersDialogType = {
+        orig,
+        closer,
+        modifier,
+        previewMsg,
+        onValid,
+    -> LettersDialog(orig, closer, modifier, previewMsg, onValid)}
+
 @Composable
 fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewModel(),
                 uiStateFlow: StateFlow<WordsUiState>,
                 onMaskChange: (String) -> Unit,
                 lettersFlow: StateFlow<String>,
                 onLettersChange: (String) -> Unit,
-                previewMsg: String = "") {
+                previewMsg: String = "",
+                dialog: LettersDialogType = lettersDialog
+) {
     var lettersShow by rememberSaveable {
         mutableStateOf(false)
     }
@@ -78,13 +88,16 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         if (letters.isEmpty()) lettersShow = true
-        if (lettersShow) LettersDialog(
+        if (lettersShow) dialog(
             letters,
-            closer = { lettersShow = false }
-        ) { text: String ->
-            onLettersChange(text)
-            mask = ""
-        }
+            { lettersShow = false },
+            Modifier,
+            "",
+            { text: String ->
+                onLettersChange(text)
+                mask = ""
+            }
+        )
         OutlinedCard(
             border = BorderStroke(
                 width = 1.dp, color = Color.Black
@@ -225,6 +238,7 @@ fun WordsPreview() {
             onMaskChange = {},
             previewMsg = "Error message",
             modifier = Modifier.padding(it),
+            dialog = lettersDialog
         )
     }
 }
