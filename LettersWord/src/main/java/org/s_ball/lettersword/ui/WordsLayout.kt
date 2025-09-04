@@ -126,6 +126,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                             Text(
                                 letters,
                                 style = Typography.displaySmall,
+                                modifier = Modifier.testTag("letters")
                             )
                         }
                         OutlinedButton(

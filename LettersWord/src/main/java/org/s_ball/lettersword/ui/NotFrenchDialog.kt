@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.s_ball.lettersword.R
@@ -22,7 +23,8 @@ fun NotFrenchDialog(
     AlertDialog(
         confirmButton = {
             Button(
-                onClick = onClose
+                onClick = onClose,
+                modifier = Modifier.testTag("Continue")
             ) {
                 Text(stringResource(R.string.cont))
             }
@@ -34,7 +36,8 @@ fun NotFrenchDialog(
                 onClick = {
                     onClose()
                     onAbort()
-                }
+                },
+                modifier = Modifier.testTag("Abort")
             ) {
                 Text(stringResource(R.string.abort))
             }
@@ -44,7 +47,8 @@ fun NotFrenchDialog(
         },
         text = {
             Column {
-                Text(stringResource(R.string.the_current_dictionary_only_contains_french_words))
+                Text(stringResource(R.string.the_current_dictionary_only_contains_french_words),
+                    modifier = Modifier.testTag("OnlyFrench"))
                 Text(stringResource(R.string.do_you_really_want_to_continue))
             }
         },
