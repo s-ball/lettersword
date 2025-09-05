@@ -7,8 +7,8 @@
     <string name="available_letters">Available Letters:</string>
     <string name="change">Change</string>
     <string name="search">Search</string>
-    <string name="mask_to_search">Mask to search (use _ for unknown - eg _a_):</string>
-    <string name="only_letters_or__are_allowed">Only letters or _ are allowed</string>
+    <string name="mask_to_search">Mask to search (use _ for unknown - eg _a_) or * for all:</string>
+    <string name="only_letters_or__are_allowed">Only letters, _ or * are allowed</string>
     <string name="name_and_version">%1$s - %2$s</string>
     <string name="display_a_list">Display a list of French words built from a fixed list of letters and matching a pattern.</string>
     <string name="only_non_accented">Only non accented letters are considered here. For example é and è will both be represented as e.</string>

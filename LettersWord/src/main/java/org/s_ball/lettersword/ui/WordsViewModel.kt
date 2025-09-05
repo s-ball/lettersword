@@ -14,7 +14,7 @@ package org.s_ball.lettersword.ui
 
 data class WordsUiState (
     val mask: String = "",
-    val wordList: List<String> = listOf()
+    val wordList: List<List<String>> = listOf()
 )
 
 class WordsViewModel(
@@ -28,13 +28,28 @@ class WordsViewModel(
 
     private var searcher: Searcher? = null
 
-    fun onMaskChange(word: String) {
-        val lst = if (searcher != null && word.isNotEmpty())
-            searcher!!.masked(word) else listOf()
+    fun onMaskChange(word: String): Boolean {
+        var lst: List<List<String>> = listOf()
+        if (word == "*") {
+            if (searcher != null && word.isNotEmpty()) {
+                val l = (3..searcher!!.letters.length).toList()
+                lst = l.map {
+                    searcher!!.all(it)
+                }
+            }
+        } else if ('*' in word) {
+            return false
+        } else {
+            if (searcher != null && word.isNotEmpty()) {
+                lst = listOf(searcher!!.masked(word))
+            }
+        }
         _uiState.update { state ->
             WordsUiState(word, lst)
         }
+        return true
     }
+
     fun onLettersChange(word: String) {
         _letters.update { w -> word }
         searcher = if (word.isNotEmpty()) Searcher(word, repository) else null

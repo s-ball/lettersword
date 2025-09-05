@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
@@ -21,16 +21,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -43,6 +43,8 @@ import kotlinx.coroutines.flow.StateFlow
 import org.s_ball.lettersword.R
 import org.s_ball.lettersword.ui.theme.Typography
 
+data class GridLayout(val nElt: Int, val width: Dp)
+
 val lettersDialog: LettersDialogType = {
         orig,
         closer,
@@ -54,7 +56,7 @@ val lettersDialog: LettersDialogType = {
 @Composable
 fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewModel(),
                 uiStateFlow: StateFlow<WordsUiState>,
-                onMaskChange: (String) -> Unit,
+                onMaskChange: (String) -> Boolean,
                 lettersFlow: StateFlow<String>,
                 onLettersChange: (String) -> Unit,
                 previewMsg: String = "",
@@ -67,19 +69,13 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
     val letters by lettersFlow.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    val dpSaver = Saver<MutableState<Dp>, MutableState<Float>>(
-        save = { it -> mutableFloatStateOf(it.value.value) },
-        restore = { it -> mutableStateOf(it.value.dp) }
-    )
-
     var msg by rememberSaveable { mutableStateOf(previewMsg) }
     var mask by rememberSaveable { mutableStateOf(uiState.mask) }
-    var width by rememberSaveable(saver = dpSaver) { mutableStateOf(75.dp) }
-    var newList by rememberSaveable { mutableStateOf(false) }
 
-    fun doMaskChange(word: String) {
-        onMaskChange(word)
-        newList = true
+    fun doMaskChange(word: String): String {
+        val msg = if (onMaskChange(word)) ""
+        else context.getString(R.string.only_letters_or__are_allowed)
+        return msg
     }
     Column(
         modifier = modifier
@@ -104,43 +100,43 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-                Column(
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            ) {
+                Text(
+                    stringResource(R.string.available_letters),
+                    style = Typography.labelSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row(
                     modifier = Modifier
+                        .padding(0.dp)
                         .fillMaxWidth()
-                        .padding(4.dp)
                 ) {
-                    Text(
-                        stringResource(R.string.available_letters),
-                        style = Typography.labelSmall,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Row(
-                        modifier = Modifier
-                            .padding(0.dp)
-                            .fillMaxWidth()
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.weight(1f)
                     ) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.weight(1f)
-                            ) {
-                            Text(
-                                letters,
-                                style = Typography.displaySmall,
-                                modifier = Modifier.testTag("letters")
-                            )
-                        }
-                        OutlinedButton(
-                            onClick = {
-                                lettersShow = true
-                            },
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.change),
-                            )
-                        }
+                        Text(
+                            letters,
+                            style = Typography.displaySmall,
+                            modifier = Modifier.testTag("letters")
+                        )
+                    }
+                    OutlinedButton(
+                        onClick = {
+                            lettersShow = true
+                        },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.change),
+                        )
                     }
                 }
+            }
         }
         if (!letters.isEmpty()) {
             OutlinedCard(
@@ -165,9 +161,11 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                             onValueChange = {
                                 val t = cleanSpace(it)
                                 if ('\r' in it || '\n' in it) {
-                                    doMaskChange(mask)
-                                    msg = ""
-                                } else if (t.find { c -> ((!c.isLetter() && c != '_') || c.code >= 128) } != null) {
+                                    msg = doMaskChange(mask)
+                                } else if (t.find { c ->
+                                        ((!c.isLetter() && (c != '_') && (c != '*'))
+                                                || c.code >= 128)
+                                    } != null) {
                                     msg = context.getString(R.string.only_letters_or__are_allowed)
                                 } else if (mask != t) {
                                     msg = ""
@@ -181,7 +179,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                                 .testTag("MaskField")
                         )
                         OutlinedButton(
-                            onClick = { doMaskChange(mask) },
+                            onClick = { msg = doMaskChange(mask) },
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
                                 .testTag("MaskButton")
@@ -200,19 +198,40 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                     }
                 }
             }
-            if (newList) {
-                DoMeasures(mask) { width = it }
-                newList = false
-            }
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = width + 8.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("WordsList")
-            ) {
-                items(uiState.wordList) { word ->
-                    Text(word, modifier = Modifier.padding(start = 12.dp))
-
+            var pixWidth by remember { mutableIntStateOf(0) }
+            var layouts by remember { mutableStateOf(listOf<GridLayout>()) }
+            if (!uiState.wordList.isEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.testTag("WordList")
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            pixWidth = coordinates.size.width
+                        }
+                ) {
+                    if (pixWidth != 0) {
+                        item {
+                            // Text("$pixWidth pixels - $maxWidth dp")
+                            NElt(pixWidth, uiState.wordList, 4.dp) {
+                                layouts = it
+                            }
+                        }
+                        items(uiState.wordList) { lst ->
+                            if (!lst.isEmpty()) {
+                                val i = lst[0].length
+                                val layout = layouts[i]
+                                Column(modifier = Modifier.fillMaxWidth()
+                                    .padding(4.dp)) {
+                                    for (row in lst.chunked(layout.nElt)) {
+                                        Row(modifier = Modifier.fillMaxWidth()) {
+                                            for (w in row) {
+                                                Text(w, modifier = Modifier.width(layout.width))
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -233,10 +252,10 @@ fun WordsPreview() {
             uiStateFlow = MutableStateFlow(
                 WordsUiState(
                     "___",
-                    listOf("act", "art", "car", "cat", "rat", "tar")
+                    listOf(listOf("act", "art", "car", "cat", "rat", "tar"))
                 )
             ),
-            onMaskChange = {},
+            onMaskChange = { w -> true },
             previewMsg = "Error message",
             modifier = Modifier.padding(it),
             dialog = lettersDialog

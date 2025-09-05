@@ -8,25 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 
 @Composable
-fun DoMeasuredText(txt: String, cr: (Dp) -> Unit) {
+fun NElt(pixWidth: Int, wordLists: List<List<String>>, delta: Dp, ret: (List<GridLayout>) -> Unit) {
+    val maxWidth = with(LocalDensity.current) { pixWidth.toDp() }
+    val maxLength = (wordLists.map { if (it.isEmpty()) 0 else it[0].length }).max()
     val measurer = rememberTextMeasurer()
-    val cont = measurer.measure(txt)
-    val density = LocalDensity.current
-    val dp = with(density) { cont.size.width.toDp() }
-    /* val resul = "Size of $txt (WxH): ${cont.size.width}x${cont.size.height}\n" +
-            " Width: ${with(density) { cont.size.width.toDp() }}dp - ${with(density) { cont.size.width.toSp() }}sp"
-    Text(resul)*/
-    cr(dp)
-}
-
-@Composable
-fun DoMeasures(mask: String, resul: (Dp) -> Unit) {
-    val l = mask.length
-    val withM = "m".repeat(l)
-    var dp: Dp = 0.dp
-    DoMeasuredText(withM) { dp = it }
-    resul(dp)
+    val lst = (0..maxLength).toList().map { sz ->
+        val width = with(LocalDensity.current) {
+            measurer.measure("m".repeat(sz)).size.width.toDp() + delta
+        }
+        var n = (maxWidth / width).toInt()
+        if (n == 0) n = 1
+        GridLayout(n, maxWidth / n)
+    }
+    ret(lst)
 }

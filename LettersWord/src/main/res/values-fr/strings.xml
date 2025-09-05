@@ -8,8 +8,8 @@
     <string name="only_letters_are_allowed">Seules les lettres sont autorisées</string>
     <string name="change">Changer</string>
     <string name="search">Rechercher</string>
-    <string name="mask_to_search">Modèle à rechercher (_ pour tout accepter - ex : _a_) :</string>
-    <string name="only_letters_or__are_allowed">Seules les lettres et _ sont autorisées</string>
+    <string name="mask_to_search">Modèle à rechercher (_ pour tout accepter - ex : _a_) ou * pour tous :</string>
+    <string name="only_letters_or__are_allowed">Seules les lettres, _ ou * sont autorisées</string>
     <string name="name_and_version">%1$s - %2$s</string>
     <string name="display_a_list">Affiche une liste de mots français construits à partir d\'une liste de lettres donnée et respectant un certain modèle.</string>
     <string name="only_non_accented">Seuls les caractères non accentuées sont acceptés ici. Par exemple, é et è seront tous deux représentés par e.</string>
