@@ -61,6 +61,9 @@ will use a `_` character for any unknow letter, and the relevant character
 for any known one. For example when searching for a 4 letters word having
 a `t` in second position, you would use `_t__` as mask.
 
+As a special case, the `*` mask will return all the possible words
+starting at length 3. It is intended as a help for the Daily Puzzle.
+
 NB: `LettersWord` only accept and uses lower case ASCII letters. Upper case
 ones will be mapped to their lower case equivalent, and accented ones
 will have to be provided without any diacritic. So `éèçï` should become

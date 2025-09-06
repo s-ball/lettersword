@@ -75,7 +75,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
 
     fun doMaskChange(word: String): String {
         val msg = if (onMaskChange(word)) ""
-        else context.getString(R.string.only_letters_or__are_allowed)
+        else context.getString(R.string.must_be_the_only_letter_in_the_mask)
         return msg
     }
     Column(
@@ -204,7 +204,8 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
             var layouts by remember { mutableStateOf(listOf<GridLayout>()) }
             if (!uiState.wordList.isEmpty()) {
                 LazyColumn(
-                    modifier = Modifier.testTag("WordsList")
+                    modifier = Modifier
+                        .testTag("WordsList")
                         .fillMaxWidth()
                         .onGloballyPositioned { coordinates ->
                             pixWidth = coordinates.size.width
@@ -223,7 +224,8 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                         itemsIndexed(uiState.wordList) { i, lst ->
                             if (!lst.isEmpty()) {
                                 val layout = layouts[i]
-                                Column(modifier = Modifier.fillMaxWidth()
+                                Column(modifier = Modifier
+                                    .fillMaxWidth()
                                     .padding(4.dp)) {
                                     for (row in lst.chunked(layout.nElt)) {
                                         Row(modifier = Modifier.fillMaxWidth()) {

@@ -67,6 +67,9 @@ utiliserez la lettre `_` pour toute lettre inconnue, et la bonne lettre
 pour toutes les autres. Par example, pour chercher un mot de 4 lettres
 avec un `t` en deuxième position, vous utiliseriez un masque de `_t__`.
 
+Un masque particulier, `*`, donne tous les mots possibles de 3 lettres
+et plus. Il est prévu pour aider à résoudre le Puzzle du Jour.
+
 NB : `LettersWord` n'accepte et n'utilise que des minuscules sans accents.
 Les majuscules sont remplacées par la minuscule équivalente, et les
 caractères accentués doivent être fournis sans signe diacritique. Ainsi

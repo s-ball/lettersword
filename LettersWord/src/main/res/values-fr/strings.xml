@@ -23,4 +23,6 @@
     <string name="the_current_dictionary_only_contains_french_words">Le dictionnaire courant contient seulement des mots français.</string>
     <string name="do_you_really_want_to_continue">Voulez-vous vraiment continuer ?</string>
     <string name="more_information"><![CDATA[<br/>Plus d\'information sur <a href=\"https://github.com/s-ball/lettersword/\">GitHub</a>]]></string>
+    <string name="as_a_special_case">Un masque particulier, \"*\", donne tous les mots possibles de 3 lettres et plus. Il est prévu pour aider à résoudre le Puzzle du Jour.</string>
+    <string name="must_be_the_only_letter_in_the_mask">\"*\" doit être la seule lettre du masque</string>
 </resources>

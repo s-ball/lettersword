@@ -57,6 +57,7 @@ fun InfoDialog(
                 Text(stringResource(R.string.if_a_letter))
                 Text(stringResource(R.string.the_pattern_contains))
                 Text(stringResource(R.string.for_example))
+                Text(stringResource(R.string.as_a_special_case))
                 val htmlLink = stringResource(R.string.more_information)
                 val linkStyles = TextLinkStyles(style = SpanStyle(
                         color = LocalHtmlScheme.current.link,
