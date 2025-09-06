@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -199,10 +200,11 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                 }
             }
             var pixWidth by remember { mutableIntStateOf(0) }
+            var maxWidth by remember { mutableStateOf(0.dp) }
             var layouts by remember { mutableStateOf(listOf<GridLayout>()) }
             if (!uiState.wordList.isEmpty()) {
                 LazyColumn(
-                    modifier = Modifier.testTag("WordList")
+                    modifier = Modifier.testTag("WordsList")
                         .fillMaxWidth()
                         .onGloballyPositioned { coordinates ->
                             pixWidth = coordinates.size.width
@@ -210,14 +212,16 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                 ) {
                     if (pixWidth != 0) {
                         item {
+                            maxWidth = with(LocalDensity.current) {
+                                pixWidth.toDp()
+                            }
                             // Text("$pixWidth pixels - $maxWidth dp")
-                            NElt(pixWidth, uiState.wordList, 4.dp) {
+                            NElt(maxWidth, uiState.wordList, 4.dp) {
                                 layouts = it
                             }
                         }
-                        items(uiState.wordList) { lst ->
+                        itemsIndexed(uiState.wordList) { i, lst ->
                             if (!lst.isEmpty()) {
-                                val i = lst[0].length
                                 val layout = layouts[i]
                                 Column(modifier = Modifier.fillMaxWidth()
                                     .padding(4.dp)) {

@@ -10,11 +10,10 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun NElt(pixWidth: Int, wordLists: List<List<String>>, delta: Dp, ret: (List<GridLayout>) -> Unit) {
-    val maxWidth = with(LocalDensity.current) { pixWidth.toDp() }
-    val maxLength = (wordLists.map { if (it.isEmpty()) 0 else it[0].length }).max()
+fun NElt(maxWidth: Dp, wordLists: List<List<String>>, delta: Dp, ret: (List<GridLayout>) -> Unit) {
     val measurer = rememberTextMeasurer()
-    val lst = (0..maxLength).toList().map { sz ->
+    val lst = wordLists.map { ls ->
+        val sz = if (ls.isEmpty()) 1 else ls[0].length
         val width = with(LocalDensity.current) {
             measurer.measure("m".repeat(sz)).size.width.toDp() + delta
         }

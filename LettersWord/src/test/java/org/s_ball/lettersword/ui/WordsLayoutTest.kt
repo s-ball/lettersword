@@ -72,7 +72,7 @@ class WordsLayoutTest {
 
     fun init(letters: String,
              mask: String = "",
-             words: List<String> = listOf(),
+             words: List<List<String>> = listOf(),
     ) {
         uiState = MutableStateFlow(WordsUiState(mask, words))
         lettersFlow = MutableStateFlow(letters)
@@ -83,7 +83,10 @@ class WordsLayoutTest {
             WordsLayout(
                 Modifier,
                 uiState.asStateFlow(),
-                onMaskChange = { txt -> commands.onMaskChange(txt) },
+                onMaskChange = { txt ->
+                    commands.onMaskChange(txt)
+                    true
+                },
                 lettersFlow = lettersFlow,
                 onLettersChange = { txt -> commands.onLettersChange(txt)},
                 dialog = stubDialog
@@ -118,11 +121,11 @@ class WordsLayoutTest {
     fun changeMask() {
         init("letter")
         composeTestRule.onNodeWithTag("MaskField").performTextInput("_e_")
-        composeTestRule.onNodeWithTag("WordsList").onChildren().assertCountEquals(0)
+        composeTestRule.onNodeWithTag("WordsList").assertDoesNotExist()
         composeTestRule.onNodeWithTag("MaskButton").performClick()
         verify { commands.onMaskChange("_e_") }
         uiState.update { state -> WordsUiState("_e_",
-            listOf("let", "ree", "tee", "tel", "ter", "tet")) }
+            listOf(listOf("let", "ree", "tee", "tel", "ter", "tet"))) }
         composeTestRule.onNodeWithTag("WordsList").onChildren().assertCountEquals(6)
     }
 }

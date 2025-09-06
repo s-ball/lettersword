@@ -35,7 +35,7 @@ class ViewModelTest {
         view.onLettersChange("abcabc")
         view.onMaskChange("a__")
         assertEquals(1, view.uiState.value.wordList.size)
-        assertEquals("abc", view.uiState.value.wordList[0])
+        assertEquals(listOf("abc"), view.uiState.value.wordList[0])
     }
 
     @Test
