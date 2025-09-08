@@ -6,8 +6,6 @@ package org.s_ball.lettersword.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +42,9 @@ fun MenuBar(){
                     .padding(16.dp)
             ) {
                 IconButton(onClick = { info = true }) {
-                    Icon(Icons.Default.Info, contentDescription = "Information")
+                    Icon(
+                        painter = painterResource(R.drawable.info_24),
+                        contentDescription = "Information")
                 }
             }
         }

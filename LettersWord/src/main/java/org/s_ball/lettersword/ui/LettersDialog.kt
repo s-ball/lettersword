@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -25,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -51,7 +54,7 @@ fun LettersDialog (
     previewMsg: String = "",
     onValid: (String) -> Unit,
 ) {
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(orig) }
     var msg by remember { mutableStateOf(previewMsg) }
     val context = LocalContext.current
     
@@ -109,7 +112,16 @@ fun LettersDialog (
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
-                        .testTag("LettersField")
+                        .testTag("LettersField"),
+                    trailingIcon = @Composable {
+                        if (text == "") null else
+                        IconButton(onClick = { text = ""}) {
+                            Icon(
+                                painter = painterResource(R.drawable.cancel_24),
+                                contentDescription = "Clear text",
+                            )
+                        }
+                    }
                 )
                 if (msg != "") {
                     Text(
