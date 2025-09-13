@@ -11,6 +11,7 @@
 * [Usage](#usage)
 * [Compatibility](#compatibility)
 * [Contributing](#contributing)
+* [Acknowledgements](#acknowledgments)
 * [License](#license)
 
 ## Goal
@@ -82,6 +83,12 @@ The Layout is tested on small on medium smartphones, and on a medium tablet.
 I shall always be glad to receive issues or Pull Requests on GitHub. But as
 I am the only maintainer, I cannot guarantee to react quickly to them. Please
 feel free to contact me by mail if I do not answer quickly enough...
+
+## Acknowledgments
+
+The French dictionary is taken from the project
+[dict-fr-AU-DELA](https://github.com/HubTou/dict-fr-AU-DELA/) from
+Hubert Tournier.
 
 ## License
 
