@@ -12,6 +12,7 @@
 * [Utilisation](#utilisation)
 * [Compatibilité](#compatibilité)
 * [Contribution](#contribution)
+* [Remerciements](#remerciements)
 * [License](#license)
 
 ## But
@@ -90,6 +91,12 @@ Je serai toujours content de recevoir des signalements ou des demandes de
 tirage (Pull Requests) sur GitHub. Mais comme je suis seul à m'occuper de
 l'application, je ne peux promettre de réagir rapidement. N'hésitez pas à
 me contacter par mel si je ne réponds pas assez vite.
+
+## Remerciements
+
+Le dictionnaire français est tiré du projet
+[dict-fr-AU-DELA](https://github.com/HubTou/dict-fr-AU-DELA/)
+d'Hubert Tournier.
 
 ## License
 
