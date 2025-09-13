@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -29,12 +30,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -71,7 +76,11 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
     val context = LocalContext.current
 
     var msg by rememberSaveable { mutableStateOf(previewMsg) }
-    var mask by rememberSaveable { mutableStateOf(uiState.mask) }
+    var mask by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(uiState.mask,
+        TextRange(uiState.mask.length)))
+    }
+    val focusRequester = remember { FocusRequester() }
 
     fun doMaskChange(word: String): String {
         val msg = if (onMaskChange(word)) ""
@@ -92,7 +101,7 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
             "",
             { text: String ->
                 onLettersChange(text)
-                mask = ""
+                mask = TextFieldValue()
             }
         )
         OutlinedCard(
@@ -160,17 +169,19 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                         TextField(
                             value = mask,
                             onValueChange = {
-                                val t = cleanSpace(it)
-                                if ('\r' in it || '\n' in it) {
-                                    msg = doMaskChange(mask)
+                                val t = cleanSpace(it.text)
+                                if ('\r' in it.text || '\n' in it.text) {
+                                    msg = doMaskChange(mask.text)
                                 } else if (t.find { c ->
                                         ((!c.isLetter() && (c != '_') && (c != '*'))
                                                 || c.code >= 128)
                                     } != null) {
                                     msg = context.getString(R.string.only_letters_or__are_allowed)
-                                } else if (mask != t) {
-                                    msg = ""
-                                    mask = doCase(t)
+                                } else {
+                                    if (mask.text != t) {
+                                        msg = ""
+                                    }
+                                    mask = TextFieldValue(doCase(t), it.selection)
                                 }
                             },
                             textStyle = Typography.displaySmall,
@@ -178,9 +189,10 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                                 .weight(1f)
                                 .padding(end = 8.dp)
                                 .testTag("MaskField")
+                                .focusRequester(focusRequester)
                         )
                         OutlinedButton(
-                            onClick = { msg = doMaskChange(mask) },
+                            onClick = { msg = doMaskChange(mask.text) },
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
                                 .testTag("MaskButton")
@@ -196,6 +208,9 @@ fun WordsLayout(modifier: Modifier = Modifier, //model: WordsViewModel = viewMod
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                             color = MaterialTheme.colorScheme.tertiary
                         )
+                    }
+                    LaunchedEffect(Unit) {
+                        focusRequester.requestFocus()
                     }
                 }
             }

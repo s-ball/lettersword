@@ -4,6 +4,7 @@
 
 package org.s_ball.lettersword.ui
 
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,16 +19,22 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -54,8 +61,11 @@ fun LettersDialog (
     previewMsg: String = "",
     onValid: (String) -> Unit,
 ) {
-    var text by remember { mutableStateOf(orig) }
+    var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(orig, TextRange(orig.length)))
+    }
     var msg by remember { mutableStateOf(previewMsg) }
+    val focusRequester = remember { FocusRequester() }
     val context = LocalContext.current
     
     fun doClose() {
@@ -94,31 +104,37 @@ fun LettersDialog (
                     .padding(8.dp)
             ) {
                 TextField(
-                    value = text,
+                    value = textValue,
                     label = {
                         Text(text = context.getString( R.string.available_letters))
                     },
                     onValueChange = {
-                        val t = cleanSpace(it)
-                        if ('\r' in it || '\n' in it) {
-                            doValid(text)
+                        val t = cleanSpace(it.text)
+                        if ('\r' in it.text || '\n' in it.text) {
+                            doValid(textValue.text)
                         }
                         else if (t.find { c ->  (!c.isLetter() || c.code >= 128) } != null) {
                             msg = context.getString(R.string.only_letters_are_allowed)
                         }
-                        else if (text != t){
-                            msg = ""
-                            text = doCase(t)
+                        else {
+                            if (textValue.text != t) {
+                                msg = ""
+                            }
+                            textValue = TextFieldValue(
+                                doCase(t),
+                                it.selection
+                            )
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
-                        .testTag("LettersField"),
+                        .testTag("LettersField")
+                        .focusRequester(focusRequester),
                     trailingIcon = @Composable {
-                        if (text == "") null else
-                        IconButton(onClick = { text = ""}) {
+                        if (textValue.text == "") null else
+                        IconButton(onClick = { textValue = TextFieldValue()}) {
                             Icon(
                                 painter = painterResource(R.drawable.cancel_24),
-                                contentDescription = "Clear text",
+                                contentDescription = "Clear textValue",
                             )
                         }
                     }
@@ -137,7 +153,7 @@ fun LettersDialog (
                 ) {
                     Button(
                         onClick = {
-                            doValid(text)
+                            doValid(textValue.text)
                         },
                         modifier= Modifier.testTag("Ok")
                     ) {
@@ -151,6 +167,9 @@ fun LettersDialog (
                         Text(context.getString(R.string.cancel))
                     }
                 }
+            }
+            LaunchedEffect(Unit) {
+                focusRequester.requestFocus()
             }
         }
     }

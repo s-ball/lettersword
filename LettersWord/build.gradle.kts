@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.junit.ktx)
     implementation(libs.ui.test.junit4)
+    implementation(libs.androidx.compose.runtime.saveable)
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
     testImplementation(libs.mockk)
